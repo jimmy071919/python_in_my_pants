@@ -18,7 +18,6 @@ user_id = 'Uaa22ec86541cbdfd2210e8dcdaa52b0d'
 
 @csrf_exempt
 def callback(request):   #建立callback函數
-    line_bot_api.push_message(user_id, TextSendMessage(text=f"嗨"))
     if request.method == 'POST':
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
@@ -39,10 +38,15 @@ def callback(request):   #建立callback函數
                     price = get_stock_price(num)
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=price))
 
-                if "設定" in event.message.text :
+                if "設定代碼" in event.message.text :
                     num = extract_numbers_from_string(event.message.text)
                     setnum(num)
-                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text="已設定"))
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=f"已設定{num}為股票代碼"))
+
+                if "設定閾值" in event.message.text :
+                    threshold = extract_numbers_from_string(event.message.text)
+                    setthreshold(threshold)
+                    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=f"已設定{threshold}為閾值"))
             except:
                 line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請輸入正確的股票代號"))
 
@@ -72,4 +76,9 @@ def setnum(num):
     with open('num.txt','w') as f:
         f.write(num)
     return num
+        
+def setthreshold(threshold):
+    with open('threshold.txt','w') as f:
+        f.write(threshold)
+    return threshold
         

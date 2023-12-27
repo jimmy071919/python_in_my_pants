@@ -13,20 +13,23 @@ line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 user_id = 'Uaa22ec86541cbdfd2210e8dcdaa52b0d'
 #------------------------------------------------------------------------------------
-url = 'https://tw.stock.yahoo.com/quote/0050.TW'
-anti_UA = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36 Edg/115.0.0.0'
-}
-
 
 def get_stock_price():
+    with open('pyinmypant_linebot/num.txt', 'r') as f:
+        num = f.read()
+
+    url = f'https://tw.stock.yahoo.com/quote/{num}.TW'
+
+    anti_UA = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36 Edg/115.0.0.0'
+    }
+
     response = requests.get(url, headers=anti_UA).text
     tree = etree.HTML(response)
 
     price = tree.xpath('//div[1]/div[2]/div[1]/div[1]/span[1]/text()')
 
-    price = float(price[0])  # Convert string to float and remove commas
-    #print(price)
+    price = float(price[0])
     return price
 
 def notify_user(price, threshold):
@@ -35,8 +38,10 @@ def notify_user(price, threshold):
         # 在這裡可以加入通知的程式碼，例如發送郵件或推送通知
 
 def check_stock():
-    threshold_price = 100.00  # 設定觸發通知的價格閾值
+    with open('D:\程式\python_in_my_pants\pyinmypant_linebot/threshold.txt', 'r') as f:
+        threshold_price = f.read()
 
+    threshold_price = float(threshold_price)
     current_price = get_stock_price()
     print(f"當前股價為: {current_price}")
     notify_user(current_price, threshold_price)
@@ -44,7 +49,7 @@ def check_stock():
 def main():
     check_stock()
     # 設定每小時檢查一次股價
-    schedule.every(30).minutes.do(check_stock)
+    schedule.every(1).hour.do(check_stock)
     
     while True:
         schedule.run_pending()
