@@ -49,7 +49,7 @@ def check_stock():
 def main():
     check_stock()
     # 設定每小時檢查一次股價
-    schedule.every(1).hour.do(check_stock)
+    schedule.every(20).seconds.do(check_stock)
     
     while True:
         schedule.run_pending()
