@@ -71,7 +71,7 @@ def callback(request):   #建立callback函數
                     result = predict()
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=result))
 
-                if "查看回測數據" in event.message.text :
+                if "回測數據" in event.message.text :
                     result = re_test()
                     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=result))
             except:
@@ -211,9 +211,9 @@ def predict() :
     
 
     if model.predict(future_X):
-        return(f"以使用決策樹建立模型 \n{auc_data}%\n{ac}%\n\n結論 : 5天後會漲")
+        return(f"已使用決策樹建立模型 \n{auc_data}%\n{ac}%\n\n結論 : 5天後會漲")
     else:
-        return(f"以使用決策樹建立模型 \n{auc_data}%\n{ac}%\n\n結論 : 5天後會跌")
+        return(f"已使用決策樹建立模型 \n{auc_data}%\n{ac}%\n\n結論 : 5天後會跌")
 
 def re_test():
     with open('num.txt','r') as f:
@@ -375,7 +375,7 @@ def re_test():
 年平均交易次數：{round(trade_count_per_year,2)}次 \n
 交易勝率：{round(win_rate*100,2)}% \n
 獲利因子：{round(profit_factor,2)} \n
-交易平均境報酬率：{round(mean_net_return*100,2)}% \n
+交易平均淨報酬率：{round(mean_net_return*100,2)}% \n
 回測累計報酬率：{round(acc_ret*100,2)}% \n
 年化報酬率：{round(strategy_ear*100,2)}% \n
 夏普比率：{round(strategy_sharpe,2)} \n
