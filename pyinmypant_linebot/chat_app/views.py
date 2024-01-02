@@ -126,7 +126,7 @@ def predict() :
     data.columns = ['open','high','low','close','volume']
 
     # 隨意試試看這幾個因子好了
-    ta_list = ['MACD','RSI','MOM','STOCH','ROC']
+    ta_list = ['MACD','RSI','MOM','STOCH','DX','ROC']
     # ta_list = ['WMA','EMA','RSI','ROC','MACD','STOCH','BBANDS']
     # 快速計算與整理因子
     for x in ta_list:
@@ -230,7 +230,7 @@ def re_test():
     data.columns = ['open','high','low','close','volume']
 
     # 隨意試試看這幾個因子好了
-    ta_list = ['MACD','RSI','MOM','STOCH','ROC']
+    ta_list = ['MACD','RSI','MOM','STOCH','DX','ROC']
     # ta_list = ['WMA','EMA','RSI','ROC','MACD','STOCH','BBANDS']
     # 快速計算與整理因子
     for x in ta_list:
